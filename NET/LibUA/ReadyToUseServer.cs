@@ -557,17 +557,15 @@ namespace LibUA
 
             TrendNodes = new NodeVariable[data.Sections.Count];
             int i = 0;
-            tableau[0] = "def";
-            tableau[1] = "def1";
-            tableau[2] = 0f;
-            tableau[3] = 0f;
-            tableau[4] = 0f;
+            Array.Resize(ref tableau, data.Sections.Count);
             foreach (var section in data.Sections)
             {
                 var nodeConfig = section.Keys;
                 uint nodeIdValue = uint.Parse(nodeConfig["NodeId"]);
                 string nodeName = nodeConfig["Name"];
                 string nodeType = nodeConfig["Type"];
+                string nodeDefVal = nodeConfig["DefVal"];
+                tableau[i] = nodeDefVal;
 
                 // Create NodeId with Address Space = 2 (following your original code structure)
                 NodeId nodeId = new NodeId(2, nodeIdValue);
@@ -626,15 +624,15 @@ namespace LibUA
                     nodeTypeId
                 );
 
+
                 // Add references
                 ItemsRoot.References.Add(new ReferenceNode(new NodeId(UAConst.Organizes), TrendNodes[i].Id, false));
                 TrendNodes[i].References.Add(new ReferenceNode(new NodeId(UAConst.Organizes), ItemsRoot.Id, true));
 
                 // Add to AddressSpaceTable
                 AddressSpaceTable[TrendNodes[i].Id] = TrendNodes[i];
-                i++;
+                i++;   
             }
-
         }
         
         public string GetValue(int index)
