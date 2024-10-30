@@ -38,8 +38,9 @@ namespace LibUA
 
         public static List<(string Username, string Password)> AuthorizedUsers = new List<(string, string)>
     {
-        ("optec", "oi2007"),("root", "toor")
+        ("optec", "oi2007"),("root", "toor"),(null,null)
 			//format : ("nom d'utilisateur","mot de passe")
+			//le (null,null) est à retirer avant la livraisonde la machine avec cet assembly !
     };
 
         public override RSACryptoServiceProvider ApplicationPrivateKey
@@ -235,225 +236,6 @@ namespace LibUA
 			return CreateApplicationDescriptionFromEndpointHint(endpointUrlHint);
 		}
 
-		public override DataValue[] HandleReadRequest(object session, ReadValueId[] readValueIds)
-		{
-			DataValue[] res = new DataValue[readValueIds.Length];
-			for (int i = 0; i < readValueIds.Length; i++)
-			{
-				Node node;
-				bool flag = !this.AddressSpaceTable.TryGetValue(readValueIds[i].NodeId, out node) || !this.SessionHasPermissionToRead(session, readValueIds[i].NodeId);
-				if (flag)
-				{
-					res[i] = new DataValue(null, new StatusCode?((StatusCode)2150891520U), null, null);
-				}
-				else
-				{
-					bool flag2 = readValueIds[i].AttributeId == NodeAttribute.Value;
-					if (flag2)
-					{
-						res[i] = this.HandleReadRequestInternal(readValueIds[i].NodeId);
-					}
-					else
-					{
-						bool flag3 = readValueIds[i].AttributeId == NodeAttribute.NodeId;
-						if (flag3)
-						{
-							res[i] = new DataValue(node.Id, new StatusCode?(StatusCode.Good), null, null);
-						}
-						else
-						{
-							bool flag4 = readValueIds[i].AttributeId == NodeAttribute.NodeClass;
-							if (flag4)
-							{
-								NodeClass nodeClass = node.GetNodeClass();
-								res[i] = new DataValue((int)nodeClass, new StatusCode?(StatusCode.Good), null, null);
-							}
-							else
-							{
-								bool flag5 = readValueIds[i].AttributeId == NodeAttribute.BrowseName;
-								if (flag5)
-								{
-									res[i] = new DataValue(node.BrowseName, new StatusCode?(StatusCode.Good), null, null);
-								}
-								else
-								{
-									bool flag6 = readValueIds[i].AttributeId == NodeAttribute.DisplayName;
-									if (flag6)
-									{
-										res[i] = new DataValue(node.DisplayName, new StatusCode?(StatusCode.Good), null, null);
-									}
-									else
-									{
-										bool flag7 = readValueIds[i].AttributeId == NodeAttribute.Description;
-										if (flag7)
-										{
-											res[i] = new DataValue(node.Description, new StatusCode?(StatusCode.Good), null, null);
-										}
-										else
-										{
-											bool flag8 = readValueIds[i].AttributeId == NodeAttribute.WriteMask;
-											if (flag8)
-											{
-												res[i] = new DataValue(node.WriteMask, new StatusCode?(StatusCode.Good), null, null);
-											}
-											else
-											{
-												bool flag9 = readValueIds[i].AttributeId == NodeAttribute.UserWriteMask;
-												if (flag9)
-												{
-													res[i] = new DataValue(node.UserWriteMask, new StatusCode?(StatusCode.Good), null, null);
-												}
-												else
-												{
-													bool flag10 = readValueIds[i].AttributeId == NodeAttribute.AccessRestrictions;
-													if (flag10)
-													{
-														res[i] = new DataValue(0, new StatusCode?(StatusCode.Good), null, null);
-													}
-													else
-													{
-														bool flag11 = readValueIds[i].AttributeId == NodeAttribute.IsAbstract && node is NodeReferenceType;
-														if (flag11)
-														{
-															res[i] = new DataValue((node as NodeReferenceType).IsAbstract, new StatusCode?(StatusCode.Good), null, null);
-														}
-														else
-														{
-															bool flag12 = readValueIds[i].AttributeId == NodeAttribute.Symmetric && node is NodeReferenceType;
-															if (flag12)
-															{
-																res[i] = new DataValue((node as NodeReferenceType).IsSymmetric, new StatusCode?(StatusCode.Good), null, null);
-															}
-															else
-															{
-																bool flag13 = readValueIds[i].AttributeId == NodeAttribute.InverseName && node is NodeReferenceType;
-																if (flag13)
-																{
-																	res[i] = new DataValue((node as NodeReferenceType).InverseName, new StatusCode?(StatusCode.Good), null, null);
-																}
-																else
-																{
-																	bool flag14 = readValueIds[i].AttributeId == NodeAttribute.ContainsNoLoops && node is NodeView;
-																	if (flag14)
-																	{
-																		res[i] = new DataValue((node as NodeView).ContainsNoLoops, new StatusCode?(StatusCode.Good), null, null);
-																	}
-																	else
-																	{
-																		bool flag15 = readValueIds[i].AttributeId == NodeAttribute.EventNotifier && node is NodeView;
-																		if (flag15)
-																		{
-																			res[i] = new DataValue((node as NodeView).EventNotifier, new StatusCode?(StatusCode.Good), null, null);
-																		}
-																		else
-																		{
-																			bool flag16 = readValueIds[i].AttributeId == NodeAttribute.EventNotifier && node is NodeObject;
-																			if (flag16)
-																			{
-																				res[i] = new DataValue((node as NodeObject).EventNotifier, new StatusCode?(StatusCode.Good), null, null);
-																			}
-																			else
-																			{
-																				bool flag17 = readValueIds[i].AttributeId == NodeAttribute.DataType && node is NodeVariable;
-																				if (flag17)
-																				{
-																					res[i] = new DataValue((node as NodeVariable).DataType ?? new NodeId(UAConst.BaseDataType), new StatusCode?(StatusCode.Good), null, null);
-																				}
-																				else
-																				{
-																					bool flag18 = readValueIds[i].AttributeId == NodeAttribute.DataType && node is NodeVariableType;
-																					if (flag18)
-																					{
-																						res[i] = new DataValue((node as NodeVariableType).DataType ?? new NodeId(UAConst.BaseDataType), new StatusCode?(StatusCode.Good), null, null);
-																					}
-																					else
-																					{
-																						bool flag19 = readValueIds[i].AttributeId == NodeAttribute.AccessLevel && node is NodeVariable;
-																						if (flag19)
-																						{
-																							res[i] = new DataValue((byte)(node as NodeVariable).AccessLevel, new StatusCode?(StatusCode.Good), null, null);
-																						}
-																						else
-																						{
-																							bool flag20 = readValueIds[i].AttributeId == NodeAttribute.AccessLevelEx && node is NodeVariable;
-																							if (flag20)
-																							{
-																								res[i] = new DataValue((uint)(node as NodeVariable).AccessLevel, new StatusCode?(StatusCode.Good), null, null);
-																							}
-																							else
-																							{
-																								bool flag21 = readValueIds[i].AttributeId == NodeAttribute.UserAccessLevel && node is NodeVariable;
-																								if (flag21)
-																								{
-																									res[i] = new DataValue((byte)(node as NodeVariable).UserAccessLevel, new StatusCode?(StatusCode.Good), null, null);
-																								}
-																								else
-																								{
-																									bool flag22 = readValueIds[i].AttributeId == NodeAttribute.Historizing && node is NodeVariable;
-																									if (flag22)
-																									{
-																										res[i] = new DataValue((node as NodeVariable).IsHistorizing, new StatusCode?(StatusCode.Good), null, null);
-																									}
-																									else
-																									{
-																										bool flag23 = readValueIds[i].AttributeId == NodeAttribute.MinimumSamplingInterval && node is NodeVariable;
-																										if (flag23)
-																										{
-																											res[i] = new DataValue((node as NodeVariable).MinimumResamplingInterval, new StatusCode?(StatusCode.Good), null, null);
-																										}
-																										else
-																										{
-																											bool flag24 = readValueIds[i].AttributeId == NodeAttribute.Executable && node is NodeMethod;
-																											if (flag24)
-																											{
-																												res[i] = new DataValue((node as NodeMethod).IsExecutable, new StatusCode?(StatusCode.Good), null, null);
-																											}
-																											else
-																											{
-																												bool flag25 = readValueIds[i].AttributeId == NodeAttribute.UserExecutable && node is NodeMethod;
-																												if (flag25)
-																												{
-																													res[i] = new DataValue((node as NodeMethod).IsUserExecutable, new StatusCode?(StatusCode.Good), null, null);
-																												}
-																												else
-																												{
-																													bool flag26 = readValueIds[i].AttributeId == NodeAttribute.ValueRank && node is NodeVariable;
-																													if (flag26)
-																													{
-																														res[i] = new DataValue((node as NodeVariable).ValueRank, new StatusCode?(StatusCode.Good), null, null);
-																													}
-																													else
-																													{
-																														res[i] = new DataValue(null, new StatusCode?((StatusCode)2150957056U), null, null);
-																													}
-																												}
-																											}
-																										}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			return res;
-		}
 
 		protected override DataValue HandleReadRequestInternal(NodeId id)
 
@@ -723,6 +505,8 @@ namespace LibUA
 				}
 			}
 		}
+
+
 
 		public Application(string appname,string cheminconf)
 		{
