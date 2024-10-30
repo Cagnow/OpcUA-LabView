@@ -5798,7 +5798,7 @@ namespace LibUA
 
         public class DataValue
         {
-            public object Value { get; protected set; }
+            public object Value { get;  set; }
             public uint? StatusCode { get; protected set; }
             public DateTime? SourceTimestamp { get; protected set; }
             public DateTime? ServerTimestamp { get; set; }
@@ -5836,22 +5836,22 @@ namespace LibUA
         {
             public NodeId NodeId
             {
-                get; protected set;
+                get;  set;
             }
 
             public NodeAttribute AttributeId
             {
-                get; protected set;
+                get;  set;
             }
 
             public string IndexRange
             {
-                get; protected set;
+                get;  set;
             }
 
             public QualifiedName DataEncoding
             {
-                get; protected set;
+                get;  set;
             }
 
             public ReadValueId(NodeId NodeId, NodeAttribute AttributeId, string IndexRange, QualifiedName DataEncoding)
@@ -5865,10 +5865,10 @@ namespace LibUA
 
         public class WriteValue
         {
-            public NodeId NodeId { get; protected set; }
-            public NodeAttribute AttributeId { get; protected set; }
-            public string IndexRange { get; protected set; }
-            public DataValue Value { get; protected set; }
+            public NodeId NodeId { get;  set; }
+            public NodeAttribute AttributeId { get; set; }
+            public string IndexRange { get;  set; }
+            public DataValue Value { get;  set; }
 
             public WriteValue(NodeId NodeId, NodeAttribute AttributeId, string IndexRange, DataValue Value)
             {

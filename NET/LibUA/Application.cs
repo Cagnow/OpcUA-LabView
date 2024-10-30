@@ -75,6 +75,7 @@ namespace LibUA
             private Dictionary<NodeId, object> internalAddressSpaceValues;
             private readonly ReaderWriterLockSlim monitorMapRW;
             private readonly Dictionary<ServerMonitorKey, List<MonitoredItem>> monitorMap;
+            public WriteValue[] SetValues = new WriteValue[1];
 
             public virtual X509Certificate2 ApplicationCertificate
             {
@@ -252,6 +253,28 @@ namespace LibUA
 
             public virtual void SessionRelease(object session)
             {
+            }
+
+            public void SetValue(uint index, string value)
+            {
+                object session = null;
+                //SetValues[0] = new WriteValue(new NodeId((ushort)2, index+2), new NodeAttribute(), null ,new DataValue(value, StatusCode.Good, DateTime.UtcNow));
+
+                //SetValues[1] = new WriteValue(new NodeId((ushort)2, index), new NodeAttribute(), null, new DataValue(value, StatusCode.Good, DateTime.UtcNow));
+                //SetValues[1].AttributeId = NodeAttribute.Value;
+                //SetValues[0].NodeId.NamespaceIndex = 2 ;
+                //SetValues[0].NodeId.NumericIdentifier = index;
+                //SetValues[0].Value.ServerTimestamp = DateTime.UtcNow;
+                //SetValues[0].Value.Value = value;
+                //var dv = new DataValue(value, StatusCode.Good, DateTime.UtcNow);
+                //MonitorNotifyDataChange(new NodeId(2, index + 2), new DataValue(value, StatusCode.Good, DateTime.UtcNow));
+                //NodeId Id= new NodeId((ushort)2, index + 2);
+                //DataValue dv = new DataValue(value, StatusCode.Good, DateTime.UtcNow);
+
+                SetValues[0] = new WriteValue(new NodeId((ushort)2, index + 2), new NodeAttribute(), null, new DataValue(value, StatusCode.Good, DateTime.UtcNow));
+                SetValues[0].AttributeId = NodeAttribute.Value;
+                HandleWriteRequest(session, SetValues);
+
             }
 
             public virtual Core.ApplicationDescription GetApplicationDescription(string endpointUrlHint)

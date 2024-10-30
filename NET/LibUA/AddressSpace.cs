@@ -12,12 +12,12 @@ namespace LibUA
 
             public UInt16 NamespaceIndex
             {
-                get; protected set;
+                get;  set;
             }
 
             public UInt32 NumericIdentifier
             {
-                get; protected set;
+                get;  set;
             }
 
             public byte[] ByteStringIdentifier
@@ -32,7 +32,7 @@ namespace LibUA
 
             public NodeIdNetType IdType
             {
-                get; protected set;
+                get;  set;
             }
 
             public static NodeId TryParse(string str)
