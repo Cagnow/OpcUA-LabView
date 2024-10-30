@@ -17,7 +17,7 @@ namespace LibUA
 		///*Déclaration des assemblys**
 		private readonly ApplicationDescription uaAppDesc;
 		private readonly NodeObject ItemsRoot;
-		public string test;
+		public uint ClientCount = 0 ;
 		private NodeVariable[] TrendNodes;
 		private X509Certificate2 appCertificate = null;
 		private RSA cryptPrivateKey = null;
@@ -26,14 +26,23 @@ namespace LibUA
 		protected Random rnd = new Random();
 		protected UInt64 nextEventId = 1;
 		public static object[] tableau = new object[5];
-		//public WriteValue[] SetValues = new WriteValue[1];
-		///
-		public override X509Certificate2 ApplicationCertificate
+		public List<String> AllowedUsers = new List<String>();
+		public bool AllowAnonLogin = false;
+		//public List<(string Username, string Password)> AuthorizedUsers = new List<(string, string)>();
+        //public WriteValue[] SetValues = new WriteValue[1];
+        ///
+        public override X509Certificate2 ApplicationCertificate
 		{
 			get { return appCertificate; }
 		}
-		
-		public override RSACryptoServiceProvider ApplicationPrivateKey
+
+        public static List<(string Username, string Password)> AuthorizedUsers = new List<(string, string)>
+    {
+        ("optec", "oi2007"),("root", "toor")
+			//format : ("nom d'utilisateur","mot de passe")
+    };
+
+        public override RSACryptoServiceProvider ApplicationPrivateKey
 		{
 			get
 			{
@@ -72,21 +81,27 @@ namespace LibUA
 
 		public override bool SessionValidateClientUser(object session, object userIdentityToken)
 		{
-			if (userIdentityToken is UserIdentityAnonymousToken)
-			{
-				return true;
-			}
-			else if (userIdentityToken is UserIdentityUsernameToken)
-			{
-				_ = (userIdentityToken as UserIdentityUsernameToken).Username;
+            if (userIdentityToken is UserIdentityAnonymousToken)
+            {
+				return AllowAnonLogin;
+            }
+            else if (userIdentityToken is UserIdentityUsernameToken usernameToken)
+            {
+                string username = usernameToken.Username;
+                string password = new UTF8Encoding().GetString(usernameToken.PasswordHash);
+                foreach (var (AuthorizedUsername, AuthorizedPassword) in AuthorizedUsers)
+                {
+                    if (AuthorizedUsername == username && AuthorizedPassword == password)
+                    {
+                        return true; 
+                    }
+                }
 
-                _ = (new UTF8Encoding()).GetString((userIdentityToken as UserIdentityUsernameToken).PasswordHash);
+                return false; 
+            }
 
-				return true;
-			}
-			return true;
-			throw new Exception("Unhandled user identity token type");
-		}
+            throw new Exception("Unhandled user identity token type");
+        }
 
 		private ApplicationDescription CreateApplicationDescriptionFromEndpointHint(string endpointUrlHint)
 		{
@@ -463,24 +478,8 @@ namespace LibUA
 				//return base.HandleReadRequestInternal(id);
 			}
 		}
-
-		/* public void PlayRow(string test1)
-		 {
-			 foreach (var nodes in TrendNodes)
-			 {
-				 if (nodes.Id.NamespaceIndex == 2 &&
-					 AddressSpaceTable.TryGetValue(nodes, out Node node))
-				 {
-
-					 new DataValue(test1, StatusCode.Good, DateTime.UtcNow);
-
-				 }
-			 }
-		 }*/
-
 		
-		public override UInt32 HandleHistoryReadRequest(object session, object readDetails, HistoryReadValueId id,
-				ContinuationPointHistory continuationPoint, List<DataValue> results, ref int? offsetContinueFit)
+		public override UInt32 HandleHistoryReadRequest(object session, object readDetails, HistoryReadValueId id,ContinuationPointHistory continuationPoint, List<DataValue> results, ref int? offsetContinueFit)
 		{
 			if (testHistoryPoints == null)
 			{
@@ -523,8 +522,7 @@ namespace LibUA
 			return (UInt32)StatusCode.BadHistoryOperationUnsupported;
 		}
 
-		public override UInt32 HandleHistoryEventReadRequest(object session, object readDetails,
-			   HistoryReadValueId id, ContinuationPointHistory continuationPoint, List<object[]> results)
+		public override UInt32 HandleHistoryEventReadRequest(object session, object readDetails,HistoryReadValueId id, ContinuationPointHistory continuationPoint, List<object[]> results)
 		{
 			if (readDetails is ReadEventDetails)
 			{
@@ -756,7 +754,6 @@ namespace LibUA
 
 		}
 
-
 		public static LibUA.Server.Master StartServer(string appname,Int32 port,string cheminconf)
 		{
 			var app = new Application(appname,cheminconf);
@@ -877,7 +874,6 @@ namespace LibUA
 
 		//public void SetValue(uint index, string value)
 		//{
-			object session = null;
 			//SetValues[0] = new WriteValue(new NodeId((ushort)2, index+2), new NodeAttribute(), null ,new DataValue(value, StatusCode.Good, DateTime.UtcNow));
 			
 			//SetValues[1] = new WriteValue(new NodeId((ushort)2, index), new NodeAttribute(), null, new DataValue(value, StatusCode.Good, DateTime.UtcNow));
@@ -897,38 +893,22 @@ namespace LibUA
 
 		//}
 
-        public void SendDataChangeEvent()
-        {
-			foreach (var node in TrendNodes)
-			{
-				MonitorNotifyDataChange(node.Id, new DataValue((string)node.Value, StatusCode.Good, DateTime.Now));
-			}
-        }
-
         public void StopServer(LibUA.Server.Master server)
 		{
 			server.Stop();
 		}
+
 		public override uint[] HandleWriteRequest(object session, WriteValue[] writeValues)
 		{
 			uint[] respStatus = new uint[writeValues.Length];
 			int i = 0;
-			test = "";
-			
 			foreach (var node in writeValues)
 			{
 				if (node.NodeId.NamespaceIndex == 2)
 				{
 					tableau[node.NodeId.NumericIdentifier - 2] = node.Value.Value;
-					try
-					{
-                        MonitorNotifyDataChange(node.NodeId, new DataValue((string)node.Value.Value, StatusCode.Good, DateTime.Now));
-
-                    }
-					catch(Exception ex ) { test=ex.ToString(); }
-
+					MonitorNotifyDataChange(node.NodeId, new DataValue((string)node.Value.Value, StatusCode.Good, DateTime.Now));
                     respStatus[i] = 0U;
-					//test = (string)node.Value.Value;
 
                 }
                 else
@@ -945,15 +925,14 @@ namespace LibUA
 			Master master = StartServer("OPTEC-DEBUGVS",7718,"cfg.ini");
 			object session = null;
 			WriteValue[] SetValues = new WriteValue[1];
-
-
-			//while (true)
-			//{
+			
+			while (true)
+			{
 				string value = Console.ReadLine();
 				SetValues[0] = new WriteValue(new NodeId((ushort)2, 2), new NodeAttribute(), null, new DataValue(value, StatusCode.Good, DateTime.UtcNow));
 				SetValues[0].AttributeId = NodeAttribute.Value;
 				master.App.HandleWriteRequest(session, SetValues);
-			//}
+			}
 		}
 	}
 }
