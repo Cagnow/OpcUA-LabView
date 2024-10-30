@@ -947,13 +947,13 @@ namespace LibUA
 			WriteValue[] SetValues = new WriteValue[1];
 
 
-			while (true)
-			{
+			//while (true)
+			//{
 				string value = Console.ReadLine();
 				SetValues[0] = new WriteValue(new NodeId((ushort)2, 2), new NodeAttribute(), null, new DataValue(value, StatusCode.Good, DateTime.UtcNow));
 				SetValues[0].AttributeId = NodeAttribute.Value;
 				master.App.HandleWriteRequest(session, SetValues);
-			}
+			//}
 		}
 	}
 }
