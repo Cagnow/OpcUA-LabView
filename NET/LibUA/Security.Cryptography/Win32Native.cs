@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Copyright (c) Microsoft Corporation.  All rights reserved.
 
 using System;
 using System.Diagnostics;
@@ -272,7 +272,6 @@ namespace LibUA.Security.Cryptography
                     DangerousRelease();
                 }
             }
-
         }
 
         protected override bool ReleaseHandle()
