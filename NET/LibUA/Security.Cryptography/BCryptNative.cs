@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Copyright (c) Microsoft Corporation.  All rights reserved.
 
 using System;
 using System.Diagnostics;
@@ -425,7 +425,6 @@ namespace LibUA.Security.Cryptography
                                                                    [Out, MarshalAs(UnmanagedType.LPArray)] byte[] pbDerivedKey,
                                                                    int cbDerivedKey,
                                                                    int dwFlags);
-
         }
 
         /// <summary>
@@ -1181,8 +1180,6 @@ namespace LibUA.Security.Cryptography
 
             return derivedKey;
         }
-
-
     }       // end class BCryptNative
 
     /// <summary>
@@ -1239,5 +1236,4 @@ namespace LibUA.Security.Cryptography
             return BCryptDestroyKey(handle) == BCryptNative.ErrorCode.Success;
         }
     }
-
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Copyright (c) Microsoft Corporation.  All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -150,7 +150,6 @@ namespace LibUA.Security.Cryptography
             Sha256 = 12,                           // ALG_SID_SHA_256
             Sha384 = 13,                           // ALG_SID_SHA_384
             Sha512 = 14,                           // ALG_SID_SHA_512
-
         }
 
         /// <summary>

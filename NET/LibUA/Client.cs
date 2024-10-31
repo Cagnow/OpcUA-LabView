@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -309,7 +309,6 @@ namespace LibUA
                 {
                     try
                     {
-
                         config.RemoteCertificate = new X509Certificate2(senderCertificate);
                         if (!UASecurity.VerifyCertificate(config.RemoteCertificate))
                         {
@@ -827,7 +826,7 @@ namespace LibUA
                     SendBufferSize = 1 << 16,
                     RecvBufferSize = 1 << 16,
                     MaxMessageSize = (uint)MaximumMessageSize,
-                    MaxChunkCount = 1337 + (uint)(MaximumMessageSize + ((1 << 16) - 1)) / (1 << 16),
+                    MaxChunkCount = 1337 + ((uint)(MaximumMessageSize + ((1 << 16) - 1)) / (1 << 16)),
                 }
             };
 
@@ -1441,7 +1440,6 @@ namespace LibUA
             }
             else
             {
-
                 bool succeeded = true;
                 succeeded &= recvBuf.Decode(out uint _);
                 succeeded &= recvBuf.Decode(out uint _);
@@ -2461,8 +2459,6 @@ namespace LibUA
                     results = new HistoryReadResult[numRecv];
                     for (int i = 0; i < numRecv && succeeded; i++)
                     {
-
-
                         succeeded &= recvHandler.RecvBuf.Decode(out uint status);
                         succeeded &= recvHandler.RecvBuf.DecodeUAByteString(out byte[] contPoint);
                         succeeded &= recvHandler.RecvBuf.Decode(out NodeId type);
@@ -3618,7 +3614,6 @@ namespace LibUA
             succeeded &= recvHandler.RecvBuf.DecodeArraySize(out uint numNotificationData);
             for (int i = 0; succeeded && i < numNotificationData; i++)
             {
-
                 succeeded &= recvHandler.RecvBuf.Decode(out NodeId typeId);
                 succeeded &= recvHandler.RecvBuf.Decode(out byte bodyType);
                 succeeded &= recvHandler.RecvBuf.Decode(out uint _);

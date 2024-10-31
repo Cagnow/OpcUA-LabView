@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
@@ -6721,7 +6721,6 @@ namespace LibUA
 
         public class TLConfiguration
         {
-
             public uint ProtocolVersion, RecvBufferSize, SendBufferSize, MaxMessageSize, MaxChunkCount;
         }
 
@@ -6801,7 +6800,7 @@ namespace LibUA
                 AtPublish,
                 // Notification with forced publish cycle interval = 0
                 Immediate,
-            };
+            }
 
             public ChangeNotificationType ChangeNotification;
 

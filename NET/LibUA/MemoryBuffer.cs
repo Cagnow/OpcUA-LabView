@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace LibUA
 {
@@ -727,28 +727,28 @@ namespace LibUA
                 switch (mask & 0x3F)
                 {
                     case (int)VariantType.Null:
-                    case (int)VariantType.Boolean: { if (!Decode(out bool v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.SByte: { if (!Decode(out sbyte v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.Byte: { if (!Decode(out byte v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.Int16: { if (!Decode(out short v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.UInt16: { if (!Decode(out ushort v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.Int32: { if (!Decode(out int v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.UInt32: { if (!Decode(out uint v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.Int64: { if (!Decode(out long v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.UInt64: { if (!Decode(out ulong v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.Float: { if (!Decode(out float v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.Double: { if (!Decode(out double v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.String: { if (!this.DecodeUAString(out string v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.DateTime: { if (!Decode(out long v)) { return false; } obj = DateTime.FromFileTimeUtc(v); return true; ; }
+                    case (int)VariantType.Boolean: { if (!Decode(out bool v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.SByte: { if (!Decode(out sbyte v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.Byte: { if (!Decode(out byte v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.Int16: { if (!Decode(out short v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.UInt16: { if (!Decode(out ushort v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.Int32: { if (!Decode(out int v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.UInt32: { if (!Decode(out uint v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.Int64: { if (!Decode(out long v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.UInt64: { if (!Decode(out ulong v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.Float: { if (!Decode(out float v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.Double: { if (!Decode(out double v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.String: { if (!this.DecodeUAString(out string v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.DateTime: { if (!Decode(out long v)) { return false; } obj = DateTime.FromFileTimeUtc(v); return true; }
                     //case (int)VariantType.Guid: { bool v; if (!Decode(out v)) { return false; } obj = v; return true;; }
-                    case (int)VariantType.ByteString: { if (!this.DecodeUAByteString(out byte[] v)) { return false; } obj = v; return true; ; }
+                    case (int)VariantType.ByteString: { if (!this.DecodeUAByteString(out byte[] v)) { return false; } obj = v; return true; }
                     //case (int)VariantType.XmlElement: { bool v; if (!Decode(out v)) { return false; } obj = v; return true;; }
-                    case (int)VariantType.NodeId: { if (!this.Decode(out NodeId v)) { return false; } obj = v; return true; ; }
+                    case (int)VariantType.NodeId: { if (!this.Decode(out NodeId v)) { return false; } obj = v; return true; }
                     //case (int)VariantType.ExpandedNodeId: { bool v; if (!Decode(out v)) { return false; } obj = v; return true;; }
-                    case (int)VariantType.StatusCode: { if (!Decode(out uint v)) { return false; } obj = (StatusCode)v; return true; ; }
-                    case (int)VariantType.QualifiedName: { if (!this.Decode(out QualifiedName v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.LocalizedText: { if (!this.Decode(out LocalizedText v)) { return false; } obj = v; return true; ; }
-                    case (int)VariantType.ExtensionObject: { if (!this.Decode(out ExtensionObject v)) { return false; } obj = v; return true; ; }
+                    case (int)VariantType.StatusCode: { if (!Decode(out uint v)) { return false; } obj = (StatusCode)v; return true; }
+                    case (int)VariantType.QualifiedName: { if (!this.Decode(out QualifiedName v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.LocalizedText: { if (!this.Decode(out LocalizedText v)) { return false; } obj = v; return true; }
+                    case (int)VariantType.ExtensionObject: { if (!this.Decode(out ExtensionObject v)) { return false; } obj = v; return true; }
                     //case (int)VariantType.DataValue: { bool v; if (!Decode(out v)) { return false; } obj = v; return true;; }
                     //case (int)VariantType.Variant: { bool v; if (!Decode(out v)) { return false; } obj = v; return true;; }
                     //case (int)VariantType.DiagnosticInfo: { bool v; if (!Decode(out v)) { return false; } obj = v; return true;; }
