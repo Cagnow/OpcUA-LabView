@@ -46,7 +46,7 @@ namespace LibUA
                     return null;
                 }
 
-                if (!ushort.TryParse(nsStr.AsSpan(3), out ushort nsIdx))
+                if (!ushort.TryParse(nsStr.Substring(3), out ushort nsIdx))
                 {
                     return null;
                 }
@@ -59,7 +59,7 @@ namespace LibUA
                 }
                 else if (vstrType.StartsWith("i="))
                 {
-                    if (!UInt32.TryParse(vstrType.AsSpan(2), out uint idx))
+                    if (!UInt32.TryParse(vstrType.Substring(2), out uint idx))
                     {
                         return null;
                     }
