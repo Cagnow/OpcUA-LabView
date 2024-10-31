@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Security;
@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 
 namespace LibUA.Security.Cryptography
 {
-
     /// <summary>
     /// Set of hash algorithms that can be used with PBKDF2. 
     /// Choosing, e.g., SHA-256, with compute PBKDF2 with HMAC-SHA256 as
@@ -62,7 +61,7 @@ namespace LibUA.Security.Cryptography
 
             if (!PBKDF2HashAlgorithm.ValidateHashName(hashName))
                 throw new ArgumentException("Invalid hash name for PBKDF2");
-            double vers = Environment.OSVersion.Version.Major + Environment.OSVersion.Version.Minor * 0.1;
+            double vers = Environment.OSVersion.Version.Major + (Environment.OSVersion.Version.Minor * 0.1);
 
 
             byte[] digest;
@@ -79,6 +78,5 @@ namespace LibUA.Security.Cryptography
 
             return digest;
         }
-
     }
 }

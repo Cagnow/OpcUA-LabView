@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Copyright (c) Microsoft Corporation.  All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -473,7 +473,6 @@ namespace LibUA.Security.Cryptography
 
             try
             {
-
                 // Ask CNG for the list of algorithms
                 ErrorCode enumStatus = UnsafeNativeMethods.NCryptEnumAlgorithms(provider,
                                                                                 operations,

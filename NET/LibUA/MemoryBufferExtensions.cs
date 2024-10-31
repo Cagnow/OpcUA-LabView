@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using LibUA.Core;
@@ -405,7 +405,6 @@ namespace LibUA
 
             if (includeType)
             {
-
                 if (!mem.Decode(out NodeId filterTypeId)) { return false; }
                 if (!mem.Decode(out byte filterMask)) { return false; }
 
@@ -561,7 +560,6 @@ namespace LibUA
 
             if (includeType)
             {
-
                 if (!mem.Decode(out NodeId filterTypeId)) { return false; }
                 if (!mem.Decode(out byte filterMask)) { return false; }
 
@@ -917,7 +915,6 @@ namespace LibUA
             {
                 for (uint i = 0; i < numUserIdentityTokens; i++)
                 {
-
                     if (!mem.DecodeUAString(out string policyId)) { return false; }
                     if (!mem.Decode(out uint tokenType)) { return false; }
                     if (!mem.DecodeUAString(out string issuedTokenType)) { return false; }
@@ -954,7 +951,7 @@ namespace LibUA
         {
             if (!mem.EncodeUAString(ep.EndpointUrl)) { return false; }
             if (!mem.Encode(ep.Server)) { return false; }
-            if (!mem.EncodeUAByteString(ep.ServerCertificate ?? new byte[0])) { return false; }
+            if (!mem.EncodeUAByteString(ep.ServerCertificate ?? Array.Empty<byte>())) { return false; }
             if (!mem.Encode((UInt32)ep.SecurityMode)) { return false; }
             if (!mem.EncodeUAString(ep.SecurityPolicyUri)) { return false; }
 
@@ -1436,7 +1433,7 @@ namespace LibUA
 
             if (Length == 0)
             {
-                str = new byte[0];
+                str = Array.Empty<byte>();
                 return true;
             }
 

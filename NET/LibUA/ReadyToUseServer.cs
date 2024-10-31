@@ -1,4 +1,4 @@
-﻿using IniParser;
+using IniParser;
 using IniParser.Model;
 using LibUA.Core;
 using LibUA.Server;
@@ -456,7 +456,6 @@ namespace LibUA
 		}
 
 		protected override DataValue HandleReadRequestInternal(NodeId id)
-
 		{
 			//object value;
 			DataValue dataValue;
@@ -468,11 +467,8 @@ namespace LibUA
 				//var ev = GenerateSampleAlarmEvent(DateTime.UtcNow);
 				//nextEventId++;
 				return dataValue;
-			
 			}
-			
 			else
-
 			{
 				return dataValue = new DataValue("10", new StatusCode?(StatusCode.Good), DateTime.UtcNow, null);
 				//return base.HandleReadRequestInternal(id);
@@ -489,7 +485,7 @@ namespace LibUA
 				for (int i = 0; i < 100000; i++)
 				{
 					testHistoryPoints.Add(new DataValue(
-						Math.Sin(i * 0.3) + Math.Cos(i * 0.17) * 0.5 + Math.Sin(i * 0.087) * 0.25, StatusCode.Good,
+						Math.Sin(i * 0.3) + (Math.Cos(i * 0.17) * 0.5) + (Math.Sin(i * 0.087) * 0.25), StatusCode.Good,
 						dt));
 					dt = dt.AddHours(1);
 				}
@@ -751,7 +747,6 @@ namespace LibUA
 
 			// Load nodes from the provided INI configuration
 			LoadNodesFromIni(cheminconf);
-
 		}
 
 		public static LibUA.Server.Master StartServer(string appname,Int32 port,string cheminconf)
@@ -773,7 +768,6 @@ namespace LibUA
 
 		void LoadNodesFromIni(string configFilePath)
 		{
-
 			var parser = new FileIniDataParser();
 			IniData data = parser.ReadFile(configFilePath);
 
@@ -869,7 +863,6 @@ namespace LibUA
 				//else if (t.Equals(typeof(string)))
 				//	ret = tableau[index].ToString();
 				//return ret;
-
 		}
 
 		//public void SetValue(uint index, string value)
@@ -909,7 +902,6 @@ namespace LibUA
 					tableau[node.NodeId.NumericIdentifier - 2] = node.Value.Value;
 					MonitorNotifyDataChange(node.NodeId, new DataValue((string)node.Value.Value, StatusCode.Good, DateTime.Now));
                     respStatus[i] = 0U;
-
                 }
                 else
 				{
