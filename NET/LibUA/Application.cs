@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -274,7 +274,6 @@ namespace LibUA
                 SetValues[0] = new WriteValue(new NodeId((ushort)2, index + 2), new NodeAttribute(), null, new DataValue(value, StatusCode.Good, DateTime.UtcNow));
                 SetValues[0].AttributeId = NodeAttribute.Value;
                 HandleWriteRequest(session, SetValues);
-
             }
 
             public virtual Core.ApplicationDescription GetApplicationDescription(string endpointUrlHint)
@@ -304,7 +303,7 @@ namespace LibUA
 
                 internalAddressSpaceValues = new Dictionary<NodeId, object>()
                 {
-                    { new NodeId(UAConst.Server_ServerArray), new string[0] },
+                    { new NodeId(UAConst.Server_ServerArray), Array.Empty<string>() },
                     { new NodeId(UAConst.Server_NamespaceArray), new string[]
                         {
                             "http://opcfoundation.org/UA/",
@@ -314,7 +313,6 @@ namespace LibUA
                     },
                     { new NodeId(UAConst.Server_ServerStatus_State), (int)ServerState.Running },
                     { new NodeId(UAConst.Server_ServiceLevel), (byte)255 },
-
                     { new NodeId(UAConst.OperationLimitsType_MaxNodesPerRead), 100 },
                     { new NodeId(UAConst.OperationLimitsType_MaxNodesPerWrite), 100 },
                     { new NodeId(UAConst.OperationLimitsType_MaxNodesPerMethodCall), 100 },
@@ -327,7 +325,6 @@ namespace LibUA
                     { new NodeId(UAConst.OperationLimitsType_MaxNodesPerHistoryUpdateData), 100 },
                     { new NodeId(UAConst.OperationLimitsType_MaxNodesPerHistoryReadEvents), 100 },
                     { new NodeId(UAConst.OperationLimitsType_MaxNodesPerHistoryUpdateEvents), 100 },
-
                     { new NodeId(UAConst.Server_ServerStatus_StartTime), 0 },
                     { new NodeId(UAConst.Server_ServerStatus_CurrentTime), 0 },
                     { new NodeId(UAConst.Server_ServerStatus_SecondsTillShutdown), 0 },
@@ -447,8 +444,8 @@ namespace LibUA
                 {
                     var r = node.References[i];
 
-                    if (browseDesc.Direction == BrowseDirection.Forward && r.IsInverse ||
-                        browseDesc.Direction == BrowseDirection.Inverse && !r.IsInverse)
+                    if ((browseDesc.Direction == BrowseDirection.Forward && r.IsInverse) ||
+                        (browseDesc.Direction == BrowseDirection.Inverse && !r.IsInverse))
                     {
                         continue;
                     }
@@ -517,7 +514,6 @@ namespace LibUA
                 {
                     respStatus[i] = (uint)StatusCode.BadNotWritable;
                 }
-
                 return respStatus;
             }
 
@@ -639,7 +635,7 @@ namespace LibUA
             {
                 var inputLength = request.InputArguments.Length;
                 var inputResults = Enumerable.Repeat((uint)StatusCode.BadNotImplemented, inputLength).ToArray();
-                return new CallMethodResult((uint)StatusCode.BadNotImplemented, inputResults, new object[0]);
+                return new CallMethodResult((uint)StatusCode.BadNotImplemented, inputResults, Array.Empty<object>());
             }
 
             protected virtual bool SessionHasPermissionToRead(object session, NodeId nodeId)

@@ -344,7 +344,7 @@ namespace LibUA.Security.Cryptography
                 // was used in a try/finally block, and CngTransform throws an exception we'll end up
                 // flushing again in the dispose.  That will end up covering the orginal exception with a
                 // less useful re-flushing the final block exception.  Instead, make the call a no-op.
-                return new byte[0];
+                return Array.Empty<byte>();
             }
         }
 

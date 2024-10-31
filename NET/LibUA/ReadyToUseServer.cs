@@ -1,4 +1,4 @@
-﻿using IniParser;
+using IniParser;
 using IniParser.Model;
 using LibUA.Core;
 using LibUA.Server;
@@ -14,7 +14,7 @@ namespace LibUA
 {
     public class Application : LibUA.Server.Application
 		{
-		///*Déclaration des assemblys**
+		///*Déclaration des variables de classe
 		private readonly ApplicationDescription uaAppDesc;
 		private readonly NodeObject ItemsRoot;
 		public uint ClientCount = 0 ;
@@ -40,7 +40,7 @@ namespace LibUA
     {
         ("optec", "oi2007"),("root", "toor"),(null,null)
 			//format : ("nom d'utilisateur","mot de passe")
-			//le (null,null) est à retirer avant la livraisonde la machine avec cet assembly !
+			//le (null,null) est à retirer avant la livraison de la machine avec cette version d'assembly !
     };
 
         public override RSACryptoServiceProvider ApplicationPrivateKey
@@ -84,7 +84,9 @@ namespace LibUA
 		{
             if (userIdentityToken is UserIdentityAnonymousToken)
             {
-				return AllowAnonLogin;
+				if (AllowAnonLogin == true)
+				{ return true; }
+				else { return false; }
             }
             else if (userIdentityToken is UserIdentityUsernameToken usernameToken)
             {
@@ -238,7 +240,6 @@ namespace LibUA
 
 
 		protected override DataValue HandleReadRequestInternal(NodeId id)
-
 		{
 			//object value;
 			DataValue dataValue;
@@ -246,17 +247,11 @@ namespace LibUA
 			   AddressSpaceTable.TryGetValue(id, out Node node)*/)
 			{
 				dataValue = new DataValue(tableau[id.NumericIdentifier - 2], new StatusCode?(StatusCode.Good), DateTime.UtcNow, null);
-				MonitorNotifyDataChange(id, dataValue);
-				//var ev = GenerateSampleAlarmEvent(DateTime.UtcNow);
-				//nextEventId++;
 				return dataValue;
-			
 			}
-			
 			else
-
 			{
-				return dataValue = new DataValue("10", new StatusCode?(StatusCode.Good), DateTime.UtcNow, null);
+				return dataValue = new DataValue("Out of range", new StatusCode?(StatusCode.Good), DateTime.UtcNow, null);
 				//return base.HandleReadRequestInternal(id);
 			}
 		}
@@ -271,7 +266,7 @@ namespace LibUA
 				for (int i = 0; i < 100000; i++)
 				{
 					testHistoryPoints.Add(new DataValue(
-						Math.Sin(i * 0.3) + Math.Cos(i * 0.17) * 0.5 + Math.Sin(i * 0.087) * 0.25, StatusCode.Good,
+						Math.Sin(i * 0.3) + (Math.Cos(i * 0.17) * 0.5) + (Math.Sin(i * 0.087) * 0.25), StatusCode.Good,
 						dt));
 					dt = dt.AddHours(1);
 				}
@@ -535,7 +530,6 @@ namespace LibUA
 
 			// Load nodes from the provided INI configuration
 			LoadNodesFromIni(cheminconf);
-
 		}
 
 		public static LibUA.Server.Master StartServer(string appname,Int32 port,string cheminconf)
@@ -557,7 +551,6 @@ namespace LibUA
 
 		void LoadNodesFromIni(string configFilePath)
 		{
-
 			var parser = new FileIniDataParser();
 			IniData data = parser.ReadFile(configFilePath);
 
@@ -653,7 +646,6 @@ namespace LibUA
 				//else if (t.Equals(typeof(string)))
 				//	ret = tableau[index].ToString();
 				//return ret;
-
 		}
 
 		//public void SetValue(uint index, string value)
@@ -693,7 +685,6 @@ namespace LibUA
 					tableau[node.NodeId.NumericIdentifier - 2] = node.Value.Value;
 					MonitorNotifyDataChange(node.NodeId, new DataValue((string)node.Value.Value, StatusCode.Good, DateTime.Now));
                     respStatus[i] = 0U;
-
                 }
                 else
 				{
