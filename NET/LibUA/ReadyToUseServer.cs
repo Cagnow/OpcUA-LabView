@@ -38,7 +38,7 @@ namespace LibUA
 
         public static List<(string Username, string Password)> AuthorizedUsers = new List<(string, string)>
     {
-        ("optec", "oi2007"),("root", "toor"),(null,null)
+        ("****", "***"),("root", "toor"),(null,null)
 			//format : ("nom d'utilisateur","mot de passe")
 			//le (null,null) est à retirer avant la livraison de la machine avec cette version d'assembly !
     };
